@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\VarDumper;
 
 /**
  * LoginForm is the model behind the login form.
@@ -43,11 +44,16 @@ class LoginForm extends Model
      * @param array $params the additional name-value pairs given in the rule
      */
     public function validatePassword($attribute, $params)
-    {
+    {                
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
-            if (!$user || !$user->validatePassword($this->password)) {
+        
+        echo '<div style="padding-top:150px;">';
+        VarDumper::dump($this->password).'<br/>';
+       
+        echo '</div>';
+        
+            if (!$user || !$user->validatePassword(md5($this->password))) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }

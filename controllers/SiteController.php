@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\Html;
 
 class SiteController extends Controller
 {
@@ -61,7 +62,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+            $logout_button = $this->render('logout');   
+                     
+            return $this->render('about', [
+            'logout_button' => $logout_button,
+        ]);            
+        } 
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
     
     public function actionSay($target = 'World')
@@ -78,17 +93,6 @@ class SiteController extends Controller
     public function actionLogin()
     {
        
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -128,6 +132,10 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+        if (!Yii::$app->user->isGuest) {
+            return $this->render('about');
+        } else {
+            $this->goHome();
+        }
     }
 }

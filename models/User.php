@@ -1,31 +1,22 @@
 <?php
 
 namespace app\models;
+use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    public static $id;
+    public static $email;
+    public static $password_hash;
+    public static $phone_number;
+    public static $firebase_user_id;
+    public static $firebase_auth_token;
+    public static $login_method;
+    public static $user_full_name;
+    public static $time_created;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+    public static function tableName() { return 'users'; }
 
 
     /**
@@ -33,7 +24,15 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        $user = self::find()
+            ->where([
+                "id" => $id
+            ])
+            ->one();
+            if (!count($user)) {
+                return null;
+            }
+            return new static($user);
     }
 
     /**
@@ -41,13 +40,13 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
+        $user = self::find()
+            ->where(["firebase_auth_token" => $token])
+            ->one();
+        if (!count($user)) {
+            return null;
         }
-
-        return null;
+        return new static($user);
     }
 
     /**
@@ -58,13 +57,15 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+        $user = self::find()
+            ->where([
+                "user_full_name" => $username
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
         }
-
-        return null;
+        return new static($user);
     }
 
     /**
@@ -80,7 +81,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->firebase_auth_token;
     }
 
     /**
@@ -88,7 +89,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->firebase_auth_token === $authKey;
     }
 
     /**
@@ -98,7 +99,13 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password)
-    {
-        return $this->password === $password;
+    {   
+        echo '<div style="padding-top:150px;">';
+        VarDumper::dump($password).'<br/>';
+        VarDumper::dump($this);
+        echo '</div>';
+        
+        
+        return $this->password_hash === $password;
     }
 }
