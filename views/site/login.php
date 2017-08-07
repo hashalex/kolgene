@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+
 $this->title = 'Login';
 ?>
 <div class="site-login">
@@ -45,6 +46,9 @@ $this->title = 'Login';
                 <?= Html::a(Html::img('@web/img/fb.png'),['fb']) ?>
                 <?= Html::a(Html::img('@web/img/twitter.png'),['twitter']) ?>
             </div>
+            
+            
+
         </div>        
 
     <?php ActiveForm::end(); ?>

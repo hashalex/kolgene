@@ -67,6 +67,27 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         }
         return new static($user);
     }
+    
+    
+      /**
+     * Finds user by Firebas ID
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByFirebaseId($id)
+    {
+        $user = self::find()
+            ->where([
+                "firebase_user_id" => $id
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
+    }
+    
 
     /**
      * @inheritdoc

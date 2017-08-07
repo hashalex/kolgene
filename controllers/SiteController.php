@@ -10,7 +10,10 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\SignUp;
 use yii\helpers\Html;
+use app\models\User;
 use yii\helpers\VarDumper;
+
+use app\components\AuthHandler;
 
 class SiteController extends Controller
 {
@@ -53,26 +56,83 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
         ];
     }
 
+    public function onAuthSuccess($client)
+    {
+        (new AuthHandler($client))->handle();
+    }
+    
+    public function actionFb()
+    {        
+        return $this->render('fb');
+    } 
+    
+    public function actionTwitter()
+    {        
+        return $this->render('twitter');
+    }   
+    
+    /**
+    Add user to mysql if user does not exist    
+    */
+    public function actionAdd()
+    {   
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $username = explode(":", $data['username']);
+            $username = $username[0];
+            $email = explode(":", $data['email']);        
+            $email = $email[0];
+            $firebase_user_id = explode(":", $data['firebase_user_id']);
+            $firebase_user_id = $firebase_user_id[0];
+            $firebase_auth_token = explode(":", $data['firebase_auth_token']);
+            $firebase_auth_token = $firebase_auth_token[0];
+            $method = explode(":", $data['method']);
+            $method = $method[0];
+                         
+            $user = User::findIdentityByAccessToken($firebase_auth_token);
+            if($user == 'null') {                      
+                 $user = new User();
+                 $user->user_full_name = $username;    
+                 $user->firebase_user_id = $firebase_user_id;
+                 $user->firebase_auth_token = $firebase_auth_token;
+                 if(!empty($email)) {  
+                   $user->email = $email;
+                 }        
+                 $user->login_method = $method;
+                 $user->save();    
+           }      
+        
+            if($user->id > 0) {
+                Yii::$app->user->login($user, 3600*24*30);
+            }
+            
+           if (!Yii::$app->user->isGuest) {           
+             $this->redirect('about');
+           } 
+           
+       }
+    }  
+        
     /**
      * Displays homepage.
      *
      * @return string
      */
     public function actionIndex()
-    {
-        
+    {        
         if(Yii::$app->requestedRoute == 'site/index') {
             $this->goHome();
         }
         
         if (!Yii::$app->user->isGuest) {
-            $logout_button = $this->render('logout');                     
-            return $this->render('about', [
-            'logout_button' => $logout_button,
-        ]);            
+            $this->redirect('about');          
         } 
         
 
@@ -84,9 +144,6 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-    
-    
-    
 
     /**
      * Logout action.
@@ -143,7 +200,10 @@ class SiteController extends Controller
     public function actionAbout()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->render('about');
+             $logout_button = $this->render('logout');                     
+            return $this->render('about', [
+            'logout_button' => $logout_button,
+          ]);          
         } else {
             $this->goHome();
         }

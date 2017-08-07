@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     
     <p>
-      <img src="img/congratulation.jpg" border="0"/><br />
+      <img src="<?=Yii::$app->request->baseUrl?>/img/congratulation.jpg" border="0"/><br />
       <?=$logout_button?>
     </p>
 </div>

@@ -49,20 +49,26 @@ $config = [
             'rules' => [
             ],
         ],
-        
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'facebook' => [
+                    'class' => 'yii\authclient\clients\Facebook',
+                    'clientId' => '1587988921251506',
+                    'clientSecret' => '464924c6f09c54e2036d69d25c60d75b',
+                ],
+                'twitter' => [
+                    'class' => 'yii\authclient\clients\Twitter',
+                    'clientId' => 'hJsl4AhCWD3dwau9nEMudMjCm',
+                    'clientSecret' => '3OYoWpah4XtjzDrMVPacNmoeOuUZd0sjc4cfgQIqrcwugmgLNZ',
+                ]
+          ]
+        ]        
     ],
     'params' => $params,
 ];
 
 if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
-
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
