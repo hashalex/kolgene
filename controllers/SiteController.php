@@ -8,8 +8,9 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\SignUp;
 use yii\helpers\Html;
+use yii\helpers\VarDumper;
 
 class SiteController extends Controller
 {
@@ -62,13 +63,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        
+        if(Yii::$app->requestedRoute == 'site/index') {
+            $this->goHome();
+        }
+        
         if (!Yii::$app->user->isGuest) {
-            $logout_button = $this->render('logout');   
-                     
+            $logout_button = $this->render('logout');                     
             return $this->render('about', [
             'logout_button' => $logout_button,
         ]);            
         } 
+        
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -79,21 +85,8 @@ class SiteController extends Controller
         ]);
     }
     
-    public function actionSay($target = 'World')
-    {
-        return $this->render('say', ['target' => $target]);
-    }
-
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-       
-    }
+    
+    
 
     /**
      * Logout action.
@@ -103,25 +96,42 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
     /**
-     * Displays contact page.
+     * Displays signup phone page.
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionSignup()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        $model = new SignUp();
+        if ($model->load(Yii::$app->request->post()) &&  $model->signupUser()) {
+            Yii::$app->session->setFlash('signupSubmitted');
 
             return $this->refresh();
         }
-        return $this->render('contact', [
-            'model' => $model,
+
+        return $this->render('signup', [
+            'model' => $model, 'type' => 'phone'
+        ]);
+    }
+    
+     /**
+     * Displays signup email page.
+     *
+     * @return Response|string
+     */
+    public function actionSignup_email()
+    {        
+        $model = new SignUp();        
+        if ($model->load(Yii::$app->request->post()) && $model->signupUser()) {
+            Yii::$app->session->setFlash('signupSubmitted');
+            return $this->refresh();
+        }
+        return $this->render('signup', [
+            'model' => $model, 'type' => 'email'
         ]);
     }
 

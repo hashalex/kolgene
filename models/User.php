@@ -99,13 +99,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password)
-    {   
-        echo '<div style="padding-top:150px;">';
-        VarDumper::dump($password).'<br/>';
-        VarDumper::dump($this);
-        echo '</div>';
-        
-        
+    {         
         return $this->password_hash === $password;
     }
 }
