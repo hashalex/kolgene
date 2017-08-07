@@ -68,6 +68,9 @@ class SiteController extends Controller
         (new AuthHandler($client))->handle();
     }
     
+    /**
+     * Facebook auth
+     */ 
     public function actionFb()
     {        
         return $this->render('fb_twitter', [
@@ -75,6 +78,9 @@ class SiteController extends Controller
         ]);
     } 
     
+     /**
+     * Twitter auth
+     */ 
     public function actionTwitter()
     {        
         return $this->render('fb_twitter', [
