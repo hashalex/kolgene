@@ -70,12 +70,16 @@ class SiteController extends Controller
     
     public function actionFb()
     {        
-        return $this->render('fb');
+        return $this->render('fb_twitter', [
+            'type' => 'Facebook',
+        ]);
     } 
     
     public function actionTwitter()
     {        
-        return $this->render('twitter');
+        return $this->render('fb_twitter', [
+            'type' => 'Twitter',
+        ]);
     }   
     
     /**
@@ -97,7 +101,7 @@ class SiteController extends Controller
             $method = $method[0];
                          
             $user = User::findIdentityByAccessToken($firebase_auth_token);
-            if($user == 'null') {                      
+            if($user == null) {                      
                  $user = new User();
                  $user->user_full_name = $username;    
                  $user->firebase_user_id = $firebase_user_id;
