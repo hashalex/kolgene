@@ -24,7 +24,9 @@ AppAsset::register($this);
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>     
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>    
       
     <?php $this->head() ?>
 </head>

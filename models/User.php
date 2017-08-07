@@ -68,6 +68,25 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return new static($user);
     }
     
+    /**
+     * Find user by email
+     * 
+     * @param string $username
+     * @return static|null
+     */ 
+    public static function findByUserEmail($email)
+    {
+        $user = self::find()
+            ->where([
+                "email" => $email
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
+    }
+    
     
       /**
      * Finds user by Firebas ID
@@ -95,6 +114,14 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * Get user name
+     */
+    public function getUserName()
+    {
+        return $this->user_full_name;
     }
 
     /**

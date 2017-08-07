@@ -25,9 +25,7 @@ $this->title = 'Login';
     ]); ?>
 
         <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
         <?= $form->field($model, 'password')->passwordInput() ?>
-
         <?= $form->field($model, 'rememberMe')->checkbox([
             'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
         ]) ?>
@@ -40,15 +38,12 @@ $this->title = 'Login';
         </div>
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-               
-                <?= Html::a( 'SignUp', 'site/signup_email', ['class' => 'btn btn-primary', 'name' => 'signup-button'] ); ?>
-                <?= Html::a( 'SignUp with Phone', 'site/signup', ['class' => 'btn btn-primary', 'name' => 'signup-button'] ); ?>
-                <?= Html::a(Html::img('@web/img/fb.png'),['fb']) ?>
-                <?= Html::a(Html::img('@web/img/twitter.png'),['twitter']) ?>
-            </div>
-            
-            
-
+            Sign Up: <br />               
+            <?= Html::a('<i class="fa fa-envelope"></i> Email',['site/signup_email'], ['class' => 'btn btn-default btn-sm', 'title' => 'Email']) ?>
+            <?= Html::a('<i class="fa fa-facebook"></i> Facebook',['site/fb'], ['class' => 'btn btn-default btn-sm', 'title' => 'Facebook']) ?>
+            <?= Html::a('<i class="fa fa-twitter"></i> Twitter',['site/twitter'], ['class' => 'btn btn-default btn-sm', 'title' => 'Twitter']) ?>
+            <?= Html::a('<i class="fa fa-phone"></i> Phone',['site/signup'], ['class' => 'btn btn-default btn-sm', 'title' => 'Phone']) ?>            
+            </div>            
         </div>        
 
     <?php ActiveForm::end(); ?>

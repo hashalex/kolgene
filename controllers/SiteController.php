@@ -166,17 +166,8 @@ class SiteController extends Controller
      * @return Response|string
      */
     public function actionSignup()
-    {
-        $model = new SignUp();
-        if ($model->load(Yii::$app->request->post()) &&  $model->signupUser()) {
-            Yii::$app->session->setFlash('signupSubmitted');
-
-            return $this->refresh();
-        }
-
-        return $this->render('signup', [
-            'model' => $model, 'type' => 'phone'
-        ]);
+    {        
+        return $this->render('signup_phone');
     }
     
      /**
@@ -187,9 +178,15 @@ class SiteController extends Controller
     public function actionSignup_email()
     {        
         $model = new SignUp();        
-        if ($model->load(Yii::$app->request->post()) && $model->signupUser()) {
-            Yii::$app->session->setFlash('signupSubmitted');
-            return $this->refresh();
+        if ($model->load(Yii::$app->request->post())) {                 
+            $user = $model->signupUser();            
+            if($user->id > 0) {
+                Yii::$app->user->login($user, 3600*24*30);
+            }
+            
+           if (!Yii::$app->user->isGuest) {           
+             $this->redirect('about');
+           }            
         }
         return $this->render('signup', [
             'model' => $model, 'type' => 'email'
@@ -206,7 +203,8 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
              $logout_button = $this->render('logout');                     
             return $this->render('about', [
-            'logout_button' => $logout_button,
+            'logout_button' => $logout_button, 
+            'user_name' => Yii::$app->user->identity->getUserName()
           ]);          
         } else {
             $this->goHome();

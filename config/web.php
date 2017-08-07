@@ -63,7 +63,8 @@ $config = [
                     'clientSecret' => '3OYoWpah4XtjzDrMVPacNmoeOuUZd0sjc4cfgQIqrcwugmgLNZ',
                 ]
           ]
-        ]        
+        ],
+                  
     ],
     'params' => $params,
 ];

@@ -8,8 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-if ($type == 'email') $this->title = 'Sign Up Email';
-elseif ($type == 'phone') $this->title = 'Sign Up Phone';
+$this->title = 'Sign Up Email';
 
 ?>
 <div class="site-contact">
@@ -35,30 +34,17 @@ elseif ($type == 'phone') $this->title = 'Sign Up Phone';
 
                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>                  
 
-                   <?= $form->field($model, 'password')->passwordInput() ?>
-                   
-                   <?php if ($type == 'email'): ?>
-                   <?= $form->field($model, 'email') ?>
-                   <?php endif; ?>
-                   
-                   <?php if ($type == 'phone'): ?>
-                   <?= $form->field($model, 'phone') ?>
-                   
-                   
-                   <?= $form->field($model, 'sms_code')->widget(Captcha::className(), [
-                        'template' => '<div class="row"><div class="col-lg-3">{input}</div></div>',
-                    ]) ?>
-                    
-                   <?php endif; ?>
-                   
+                   <?= $form->field($model, 'password')->passwordInput() ?>                  
+                  
+                   <?= $form->field($model, 'email') ?>                                     
 
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton('Sign Up', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>                      
-                        <?= Html::a( 'Back', 'index', ['class' => 'btn btn-primary', 'name' => 'back-button'] ); ?>
+                        <?= Html::a( 'Back', 'index', ['class' => 'btn btn-default', 'name' => 'back-button'] ); ?>
+                        <?= Html::submitButton('Sign Up', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>

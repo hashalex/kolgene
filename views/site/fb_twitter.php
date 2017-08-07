@@ -1,5 +1,10 @@
 <?php
 /* @var $this yii\web\View */
+/*
+Source:
+https://firebase.google.com/docs/auth/web/facebook-login
+https://firebase.google.com/docs/auth/web/twitter-login
+*/
 use yii\helpers\Html;
 $this->title = $type.' authentication';
 ?>
@@ -10,15 +15,15 @@ $this->title = $type.' authentication';
 if($type == 'Facebook' || $type == 'Twitter'): 
 ?>
 <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
- <script>
+<script>
        
               var config = {
-                apiKey: "AIzaSyAsOn5HVZA-aeCNkpJyrdN19nI7lRoH488",
-                authDomain: "kolgene-4db9e.firebaseapp.com",
-                databaseURL: "https://kolgene-4db9e.firebaseio.com",
-                projectId: "kolgene-4db9e",
-                storageBucket: "kolgene-4db9e.appspot.com",
-                messagingSenderId: "900382579951"
+                apiKey: "<?=Yii::$app->params['fireBase']['apiKey']?>",
+                authDomain: "<?=Yii::$app->params['fireBase']['authDomain']?>",
+                databaseURL: "<?=Yii::$app->params['fireBase']['databaseURL']?>",
+                projectId: "<?=Yii::$app->params['fireBase']['projectId']?>",
+                storageBucket: "<?=Yii::$app->params['fireBase']['storageBucket']?>",
+                messagingSenderId: "<?=Yii::$app->params['fireBase']['messagingSenderId']?>"
               };
               firebase.initializeApp(config); 
                          
@@ -35,8 +40,7 @@ if($type == 'Facebook' || $type == 'Twitter'):
                        data: {username: user.displayName, email: user.email, firebase_user_id: user.uid, firebase_auth_token: token, method: '<?=$type?>', _csrf : '<?=Yii::$app->request->getCsrfToken()?>' },
                        success: function (data) {            
                        }            
-                  });
-                  
+                  });                  
                 }).catch(function(error) {                
                   var errorCode = error.code;
                   var errorMessage = error.message;

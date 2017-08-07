@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\helpers\VarDumper;
+use kartik\password\StrengthValidator;
 
 /**
  * SignUp is the model behind the contact form.
@@ -25,15 +26,12 @@ class SignUp extends Model
     {
         return [
             // name, email, subject and body are required
-            [['username', 'email', 'password', 'phone', 'sms_code'], 'required'],
+            [['username', 'email', 'password'], 'required'],
+            [['password'], StrengthValidator::className(), 'preset'=>'normal', 'userAttribute'=>'username'],
             // email has to be a valid email address
-            ['email', 'email'],
-            // phone number has to be a valid phone
-            ['phone', 'validatePhone'],
+            ['email', 'email'],           
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
-            // password is validated by validatePasswordSignUp()
-            ['password', 'validatePasswordSignUp'],
         ];
     }
 
@@ -54,22 +52,23 @@ class SignUp extends Model
         VarDumper::dump($params).'<br/>';       
         echo '</div>';
         
-        $this->addError($attribute, 'Incorrect username or password1212.');
+        $this->addError($attribute, 'Incorrect username or password.');
         return false;
     }
     
     public function validatePasswordSignUp($attribute, $params)
     {                
         
-    }
-    
+    }    
     
             
     /**
      * Add new user with email
      */
     public function signupUser()
-    {      
+    {          
+       $user = User::findByUserEmail($this->email);
+       if($user == null) { 
          $user = new User();
          $user->user_full_name = $this->username;
          if(!empty($this->phone)) {
@@ -81,7 +80,8 @@ class SignUp extends Model
          $user->password_hash = md5($this->password);
          $user->login_method = 'email';
          $user->save();
-         return true;
+       }   
+       return $user;
     }
     
     

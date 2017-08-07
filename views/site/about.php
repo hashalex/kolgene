@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Congratulation, you logged in!';
+$this->title = 'Congratulation, '.$user_name.' you logged in!';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
@@ -12,6 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <p>
       <img src="<?=Yii::$app->request->baseUrl?>/img/congratulation.jpg" border="0"/><br />
-      <?=$logout_button?>
+      <div class="form-group">
+      <?=Html::beginForm(['/site/logout'], 'post')
+        .Html::submitButton(
+          'Logout',
+          ['class' => 'btn btn-primary logout']
+        )
+        .Html::endForm();
+        ?>
+     </div>
     </p>
 </div>
