@@ -99,12 +99,15 @@ class SiteController extends Controller
             $username = $username[0];
             $email = explode(":", $data['email']);        
             $email = $email[0];
+            
             $firebase_user_id = explode(":", $data['firebase_user_id']);
             $firebase_user_id = $firebase_user_id[0];
             $firebase_auth_token = explode(":", $data['firebase_auth_token']);
             $firebase_auth_token = $firebase_auth_token[0];
             $method = explode(":", $data['method']);
             $method = $method[0];
+            $phone_number = explode(":", $data['phone_number']);
+            $phone_number = $phone_number[0];
                          
             $user = User::findIdentityByAccessToken($firebase_auth_token);
             if($user == null) {                      
@@ -114,7 +117,10 @@ class SiteController extends Controller
                  $user->firebase_auth_token = $firebase_auth_token;
                  if(!empty($email)) {  
                    $user->email = $email;
-                 }        
+                 }  
+                 if(!empty($phone_number)) {  
+                   $user->phone_number = $phone_number;
+                 }       
                  $user->login_method = $method;
                  $user->save();    
            }      
@@ -172,8 +178,11 @@ class SiteController extends Controller
      * @return Response|string
      */
     public function actionSignup()
-    {        
-        return $this->render('signup_phone');
+    {   
+        $model = new SignUp(); 
+        return $this->render('signup_phone', [
+            'model' => $model
+            ]);
     }
     
      /**

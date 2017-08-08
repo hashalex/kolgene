@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\helpers\VarDumper;
 use kartik\password\StrengthValidator;
+use borales\extensions\phoneInput\PhoneInputValidator;
 
 /**
  * SignUp is the model behind the contact form.
@@ -26,12 +27,15 @@ class SignUp extends Model
     {
         return [
             // name, email, subject and body are required
-            [['username', 'email', 'password'], 'required'],
+            [['username', 'email', 'password', 'phone', 'sms_code'], 'required'],
             [['password'], StrengthValidator::className(), 'preset'=>'normal', 'userAttribute'=>'username'],
             // email has to be a valid email address
             ['email', 'email'],           
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
+            //phone validation
+          //  [['phone'], 'string'],
+         //   [['phone'], PhoneInputValidator::className()]
         ];
     }
 
