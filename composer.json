@@ -21,7 +21,8 @@
         "yiisoft/yii2-authclient": "^2.1",
         "kartik-v/yii2-password": "@dev",
         "udokmeci/yii2-phone-validator": "@dev",
-        "borales/yii2-phone-input": "*"
+        "borales/yii2-phone-input": "*",
+        "miserenkov/yii2-phone-validator": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

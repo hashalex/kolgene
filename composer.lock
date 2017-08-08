@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "94e5667ea0ac23c231c82e1d20105387",
+    "content-hash": "205c0c9d06f238659fec4c11875bb94c",
     "packages": [
         {
             "name": "borales/yii2-phone-input",
@@ -638,6 +638,51 @@
                 "yii2"
             ],
             "time": "2017-05-01T12:47:45+00:00"
+        },
+        {
+            "name": "miserenkov/yii2-phone-validator",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/miserenkov/yii2-phone-validator.git",
+                "reference": "35ec4258fd1d39f32e95c705d663136f4c5292e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/miserenkov/yii2-phone-validator/zipball/35ec4258fd1d39f32e95c705d663136f4c5292e0",
+                "reference": "35ec4258fd1d39f32e95c705d663136f4c5292e0",
+                "shasum": ""
+            },
+            "require": {
+                "giggsey/libphonenumber-for-php": "~7.0",
+                "yiisoft/yii2": "~2"
+            },
+            "require-dev": {
+                "codeception/codeception": "^2.2"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "miserenkov\\validators\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Misha Serenkov",
+                    "email": "mi.serenkov@gmail.com"
+                }
+            ],
+            "description": "Yii2 phone validator",
+            "keywords": [
+                "phone",
+                "validator",
+                "yii2"
+            ],
+            "time": "2017-03-17T12:15:17+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

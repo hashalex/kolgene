@@ -7,7 +7,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
-use borales\extensions\phoneInput\PhoneInput;
 /*
 Source: https://firebase.google.com/docs/auth/web/phone-auth
 */
@@ -27,10 +26,12 @@ $this->title = 'Sign Up Phone';
 
                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>                  
 
-                   <?= $form->field($model, 'password')->passwordInput() ?>                  
+                   <?= $form->field($model, 'password')->passwordInput() ?>  
+                   
+                  
                   
                   <div class="row">
-                    <div class="col-lg-6"><?= $form->field($model, 'phone'); ?></div>
+                    <div class="col-lg-6"> <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), [ 'mask' => '+999-99-9999-999',]) ?> </div>
                     <div class="col-lg-3" style="margin-top: 30px;"><?= Html::a( 'Send sms', '#', ['class' => 'btn btn-primary', 'name' => 'sms', 'id' => 'sign-in-button', 'onclick' => 'getSms()'] ); ?></div>
                   </div>                        
                     
